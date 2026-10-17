@@ -1,0 +1,63 @@
+
+export const heroProducts = [
+  {
+    id: 'croissant',
+    name: 'Butter Croissant',
+    category: 'THE GOLDEN CLASSIC',
+    title: 'Layers of',
+    highlight: 'happiness.',
+    description:
+      'Golden, buttery and beautifully flaky. A little moment of joy in every bite.',
+    price: 450,
+    image: '/images/hero/croissant.png',
+    emoji: '🥐',
+    background: '#fff0df',
+    accent: '#ac7045',
+    entrance: 'spin',
+  },
+  {
+    id: 'donut',
+    name: 'Choco Vanilla Chip Donut',
+    category: 'CHOCOLATE HEAVEN',
+    title: 'Dipped in',
+    highlight: 'happiness.',
+    description:
+      'A fluffy golden donut covered in rich chocolate glaze, silky vanilla drizzle and crunchy chocolate chips.',
+    price: 390,
+    image: '/images/hero/donut.png',
+    emoji: '🍩',
+    background: '#f4e5db',
+    accent: '#86513e',
+    entrance: 'bounce',
+  },
+  {
+    id: 'cinnamon',
+    name: 'Cinnamon Roll',
+    category: 'FRESH FROM THE OVEN',
+    title: 'Swirls of',
+    highlight: 'comfort.',
+    description:
+      'Warm cinnamon swirls, tender golden dough and a generous drizzle of creamy vanilla icing.',
+    price: 520,
+    image: '/images/hero/cinnamon-roll.png',
+    emoji: '🌀',
+    background: '#f2e3d2',
+    accent: '#9f6c48',
+    entrance: 'rise',
+  },
+  {
+    id: 'strawberry',
+    name: 'Strawberry Cream Pastry',
+    category: 'A BERRY SPECIAL MOMENT',
+    title: 'Sweetness in',
+    highlight: 'bloom.',
+    description:
+      'Delicate flaky pastry layered with silky vanilla cream, fresh strawberries and delightful berry sprinkles.',
+    price: 580,
+    image: '/images/hero/strawberry-pastry.png',
+    emoji: '🍓',
+    background: '#f9e4df',
+    accent: '#c16b71',
+    entrance: 'swoop',
+  },
+];

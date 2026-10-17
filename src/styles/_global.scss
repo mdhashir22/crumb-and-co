@@ -1,0 +1,96 @@
+
+@use './variables' as *;
+
+/* CRUMB & CO. — GLOBAL STYLES */
+
+:root {
+  font-family: $font-body;
+
+  color: $text;
+  background: $cream;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  --cream: #{$cream};
+  --peach: #{$peach};
+  --blush: #{$blush};
+  --caramel: #{$caramel};
+  --cocoa: #{$cocoa};
+  --pistachio: #{$pistachio};
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: $cream;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: $font-body;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+::selection {
+  background: $blush;
+  color: $cocoa;
+}
+
+.container {
+  width: min(100% - 48px, $container-width);
+  margin-inline: auto;
+}
+
+@media (max-width: 600px) {
+  .container {
+    width: min(100% - 32px, $container-width);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

@@ -1,0 +1,879 @@
+
+@use '../../styles/variables' as *;
+
+.site-footer {
+  --footer-bg: #38251f;
+  --footer-dark: #2c1d19;
+  --footer-cream: #fff4e7;
+  --footer-peach: #edbfaa;
+  --footer-muted: #bea494;
+  --footer-line: rgba(255, 239, 222, 0.16);
+
+  position: relative;
+  isolation: isolate;
+
+  width: 100%;
+  overflow: hidden;
+
+  padding: 105px 0 0;
+
+  background:
+    radial-gradient(
+      ellipse at 90% 8%,
+      rgba(167, 108, 77, 0.19),
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 0% 80%,
+      rgba(204, 143, 107, 0.11),
+      transparent 45%
+    ),
+    var(--footer-bg);
+
+  color: var(--footer-cream);
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font-family: $font-body;
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--footer-peach);
+    outline-offset: 4px;
+  }
+
+  &__container {
+    position: relative;
+    z-index: 1;
+
+    width: min(1360px, calc(100% - 100px));
+    margin-inline: auto;
+  }
+
+  &__top {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+
+    align-items: stretch;
+
+    gap: 60px;
+
+    padding-bottom: 100px;
+
+    border-bottom: 1px solid var(--footer-line);
+  }
+
+  &__invitation {
+    min-width: 0;
+
+    padding-top: 22px;
+
+    h2 {
+      max-width: 800px;
+
+      margin: 29px 0 23px;
+
+      color: var(--footer-cream);
+
+      font-family: $font-display;
+      font-size: clamp(60px, 6.8vw, 99px);
+      font-weight: 400;
+
+      line-height: 0.99;
+      letter-spacing: -3px;
+
+      em {
+        display: block;
+
+        color: var(--footer-peach);
+
+        font-weight: 400;
+        font-style: italic;
+      }
+    }
+
+    > p {
+      max-width: 420px;
+
+      margin: 0;
+
+      color: var(--footer-muted);
+
+      font-family: $font-body;
+      font-size: 13px;
+      line-height: 2;
+    }
+  }
+
+  &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 12px;
+
+    color: var(--footer-peach);
+
+    font-family: $font-body;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+  }
+
+  &__shop-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 35px;
+
+    min-height: 59px;
+
+    margin-top: 34px;
+    padding: 7px 7px 7px 24px;
+
+    border: 1px solid rgba(255, 245, 233, 0.52);
+    border-radius: 100px;
+
+    color: var(--footer-cream);
+
+    font-family: $font-body;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    transition:
+      transform 0.3s ease,
+      background-color 0.3s ease,
+      color 0.3s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+
+      background: var(--footer-cream);
+      color: var(--footer-dark);
+    }
+  }
+
+  &__shop-arrow {
+    display: grid;
+    place-items: center;
+
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--footer-cream);
+    color: var(--footer-bg);
+
+    transition:
+      transform 0.3s ease,
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  &__shop-link:hover &__shop-arrow {
+    transform: rotate(45deg);
+
+    background: var(--footer-bg);
+    color: var(--footer-cream);
+  }
+
+  &__signature-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 340px;
+    padding: 25px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 239, 222, 0.25);
+    border-radius: 22px;
+
+    background:
+      radial-gradient(
+        circle at 50% 36%,
+        rgba(238, 189, 162, 0.17),
+        transparent 55%
+      ),
+      rgba(255, 249, 240, 0.055);
+
+    &::after {
+      content: '';
+
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      width: 235px;
+      height: 235px;
+
+      border: 1px solid rgba(255, 233, 212, 0.12);
+      border-radius: 50%;
+
+      transform: translate(-50%, -50%);
+
+      pointer-events: none;
+    }
+
+    > p {
+      position: relative;
+      z-index: 2;
+
+      margin: 0;
+
+      color: var(--footer-cream);
+
+      font-family: $font-display;
+      font-size: clamp(25px, 2.6vw, 38px);
+      line-height: 1.35;
+      text-align: center;
+    }
+  }
+
+  &__signature-top,
+  &__signature-bottom {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    color: #e2b69c;
+
+    font-family: $font-body;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  &__signature-bottom {
+    padding-top: 16px;
+
+    border-top: 1px solid var(--footer-line);
+  }
+
+  &__signature-art {
+    position: absolute;
+
+    top: 35%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    color: rgba(245, 205, 178, 0.13);
+
+    font-size: 185px;
+    line-height: 1;
+
+    pointer-events: none;
+
+    span {
+      display: block;
+
+      animation: footerStarRotate 35s linear infinite;
+    }
+  }
+
+  &__links-grid {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1.15fr)
+      minmax(0, 0.85fr)
+      minmax(0, 1fr);
+
+    gap: 55px;
+
+    padding: 72px 0 68px;
+
+    border-bottom: 1px solid var(--footer-line);
+  }
+
+  &__small-logo {
+    display: inline-block;
+
+    color: var(--footer-cream);
+
+    font-family: $font-display;
+    font-size: 39px;
+    font-weight: 400;
+
+    letter-spacing: -1.4px;
+    line-height: 1;
+
+    span {
+      color: #dfae91;
+    }
+
+    &:hover {
+      color: var(--footer-peach);
+    }
+  }
+
+  &__logo-caption {
+    display: block;
+
+    margin-top: 12px;
+
+    color: #d7a485;
+
+    font-family: $font-body;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+
+  &__about p {
+    max-width: 290px;
+
+    margin: 26px 0 0;
+
+    color: var(--footer-muted);
+
+    font-family: $font-body;
+    font-size: 12px;
+    line-height: 2;
+  }
+
+  &__navigation h3,
+  &__contact h3 {
+    margin: 4px 0 27px;
+
+    color: #ecc5a9;
+
+    font-family: $font-body;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+  }
+
+  &__nav-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 19px 24px;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 6px;
+
+      width: fit-content;
+
+      color: #dbc5b5;
+
+      font-family: $font-body;
+      font-size: 12px;
+      line-height: 1.6;
+
+      transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+
+      svg {
+        width: 13px;
+        height: 13px;
+
+        opacity: 0;
+
+        transform: translate(-3px, 3px);
+
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      &:hover {
+        transform: translateX(3px);
+
+        color: var(--footer-cream);
+
+        svg {
+          opacity: 1;
+          transform: translate(0);
+        }
+      }
+    }
+  }
+
+  &__email {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    max-width: 100%;
+
+    margin-bottom: 26px;
+
+    color: var(--footer-cream);
+
+    font-family: $font-display;
+    font-size: clamp(17px, 1.7vw, 23px);
+
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+
+    transition: color 0.3s ease;
+
+    svg {
+      flex-shrink: 0;
+
+      color: var(--footer-peach);
+    }
+
+    &:hover {
+      color: var(--footer-peach);
+    }
+  }
+
+  &__contact-detail {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    margin-top: 14px;
+
+    color: #cbb1a0;
+
+    font-family: $font-body;
+    font-size: 12px;
+
+    svg {
+      flex-shrink: 0;
+      color: #d2a184;
+    }
+  }
+
+  &__enquiry-link {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 30px;
+    padding-bottom: 9px;
+
+    border-bottom: 1px solid #c99574;
+
+    color: #e5ba9e;
+
+    font-family: $font-body;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.85px;
+
+    transition:
+      color 0.3s ease,
+      gap 0.3s ease;
+
+    &:hover {
+      gap: 18px;
+      color: var(--footer-cream);
+    }
+  }
+
+  &__brand-stage {
+    padding: 28px 0 31px;
+    overflow: hidden;
+  }
+
+  &__brand-name {
+    width: 100%;
+
+    color: #f0d7c5;
+
+    font-family: $font-display;
+    font-size: clamp(70px, 15.1vw, 210px);
+    font-weight: 400;
+
+    line-height: 0.95;
+    letter-spacing: -0.055em;
+    text-align: center;
+    white-space: nowrap;
+
+    span {
+      color: #d09a7a;
+    }
+  }
+
+  &__brand-subline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-top: 27px;
+
+    color: #d6ac92;
+
+    font-family: $font-body;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+
+    > span:nth-child(2) {
+      color: #e0b196;
+
+      font-size: 23px;
+      line-height: 1;
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    padding: 25px 0 28px;
+
+    border-top: 1px solid var(--footer-line);
+
+    color: #bb9e8b;
+
+    font-family: $font-body;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.9px;
+  }
+
+  &__bottom-heart {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    svg {
+      color: #e4aa9a;
+    }
+  }
+
+  &__back-top {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 13px;
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+    color: #eed2bd;
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition: color 0.3s ease;
+
+    > span {
+      display: grid;
+      place-items: center;
+
+      width: 39px;
+      height: 39px;
+
+      border: 1px solid rgba(255, 238, 222, 0.4);
+      border-radius: 50%;
+
+      transition:
+        transform 0.3s ease,
+        background-color 0.3s ease,
+        color 0.3s ease;
+    }
+
+    &:hover {
+      color: var(--footer-cream);
+
+      > span {
+        transform: translateY(-4px);
+
+        background: var(--footer-cream);
+        color: var(--footer-bg);
+      }
+    }
+  }
+}
+
+@keyframes footerStarRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1200px) {
+  .site-footer {
+    &__container {
+      width: calc(100% - 64px);
+    }
+
+    &__top {
+      gap: 30px;
+    }
+
+    &__links-grid {
+      gap: 32px;
+    }
+
+    &__brand-name {
+      font-size: 15vw;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .site-footer {
+    padding-top: 80px;
+
+    &__container {
+      width: calc(100% - 48px);
+    }
+
+    &__top {
+      grid-template-columns: 1fr;
+
+      gap: 40px;
+      padding-bottom: 65px;
+    }
+
+    &__invitation h2 {
+      font-size: clamp(64px, 9vw, 92px);
+    }
+
+    &__signature-card {
+      max-width: 600px;
+      min-height: 280px;
+    }
+
+    &__links-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      gap: 48px 30px;
+      padding: 60px 0;
+    }
+
+    &__contact {
+      grid-column: 1 / -1;
+    }
+
+    &__brand-name {
+      font-size: 14.5vw;
+    }
+
+    &__bottom {
+      flex-wrap: wrap;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    padding-top: 65px;
+
+    &__container {
+      width: calc(100% - 30px);
+    }
+
+    &__top {
+      gap: 32px;
+      padding-bottom: 48px;
+    }
+
+    &__invitation {
+      padding-top: 0;
+
+      h2 {
+        margin: 22px 0 20px;
+
+        font-size: clamp(51px, 11vw, 70px);
+
+        line-height: 1.03;
+        letter-spacing: -2px;
+      }
+
+      > p {
+        font-size: 12px;
+      }
+    }
+
+    &__eyebrow {
+      gap: 8px;
+
+      font-size: 9px;
+      letter-spacing: 1px;
+    }
+
+    &__shop-link {
+      gap: 18px;
+
+      min-height: 54px;
+      margin-top: 25px;
+
+      padding-left: 18px;
+
+      font-size: 9px;
+    }
+
+    &__shop-arrow {
+      width: 39px;
+      height: 39px;
+    }
+
+    &__signature-card {
+      min-height: 260px;
+      padding: 20px;
+
+      border-radius: 18px;
+
+      > p {
+        font-size: 30px;
+      }
+    }
+
+    &__signature-art {
+      font-size: 135px;
+    }
+
+    &__signature-top,
+    &__signature-bottom {
+      font-size: 8px;
+    }
+
+    &__links-grid {
+      grid-template-columns: 1fr;
+
+      gap: 37px;
+      padding: 47px 0;
+    }
+
+    &__contact {
+      grid-column: auto;
+    }
+
+    &__small-logo {
+      font-size: 37px;
+    }
+
+    &__about p {
+      margin-top: 19px;
+      font-size: 12px;
+    }
+
+    &__navigation h3,
+    &__contact h3 {
+      margin-bottom: 21px;
+    }
+
+    &__nav-links {
+      gap: 17px 13px;
+    }
+
+    &__email {
+      font-size: 20px;
+    }
+
+    &__brand-stage {
+      padding: 25px 0;
+    }
+
+    &__brand-name {
+      font-size: 14.5vw;
+      letter-spacing: -0.05em;
+    }
+
+    &__brand-subline {
+      flex-wrap: wrap;
+      justify-content: center;
+
+      gap: 10px 15px;
+      margin-top: 19px;
+
+      font-size: 7px;
+      letter-spacing: 0.55px;
+
+      text-align: center;
+
+      > span:nth-child(2) {
+        font-size: 17px;
+      }
+    }
+
+    &__bottom {
+      flex-direction: column;
+
+      gap: 18px;
+      padding: 24px 0;
+
+      font-size: 8px;
+      letter-spacing: 0.65px;
+
+      text-align: center;
+    }
+
+    &__back-top {
+      margin-top: 4px;
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .site-footer {
+    &__invitation h2 {
+      font-size: 47px;
+    }
+
+    &__signature-card > p {
+      font-size: 26px;
+    }
+
+    &__nav-links a {
+      font-size: 11px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
