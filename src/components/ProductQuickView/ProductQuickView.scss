@@ -1,6 +1,11 @@
 
 @use '../../styles/variables' as *;
 
+/* ==========================================
+   CRUMB & CO. — PRODUCT QUICK VIEW
+   Scrollable details + always visible cart
+   ========================================== */
+
 .quick-view__backdrop {
   position: fixed;
   inset: 0;
@@ -11,35 +16,40 @@
   justify-content: center;
 
   padding: 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 
   background: rgba(38, 24, 18, 0.62);
 
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
-  overflow-y: auto;
-  overscroll-behavior: contain;
 }
 
 .quick-view {
+  --modal-bg: #fffaf5;
+  --modal-line: #ebdbcf;
+
   position: relative;
   isolation: isolate;
 
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
 
   width: min(100%, 1050px);
+
+  /* FIX: explicit height makes internal scrolling work */
+  height: min(740px, calc(100dvh - 48px));
   max-height: calc(100dvh - 48px);
 
   margin: auto;
   overflow: hidden;
 
-  background: #fffaf5;
+  background: var(--modal-bg);
   border: 1px solid rgba(255, 255, 255, 0.65);
   border-radius: 28px;
 
-  box-shadow:
-    0 35px 100px rgba(35, 19, 12, 0.3);
+  box-shadow: 0 35px 100px rgba(35, 19, 12, 0.3);
 
   color: $cocoa;
 
@@ -48,6 +58,8 @@
   *::after {
     box-sizing: border-box;
   }
+
+  /* CLOSE */
 
   &__close {
     position: absolute;
@@ -61,13 +73,12 @@
 
     width: 43px;
     height: 43px;
-
     padding: 0;
 
     border: 1px solid rgba(96, 61, 44, 0.15);
     border-radius: 50%;
 
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.94);
     color: $cocoa;
 
     cursor: pointer;
@@ -89,6 +100,10 @@
     }
   }
 
+  /* ======================================
+     LEFT VISUAL
+     ====================================== */
+
   &__visual {
     position: relative;
     isolation: isolate;
@@ -97,17 +112,16 @@
     place-items: center;
 
     min-width: 0;
-    min-height: 610px;
+    min-height: 0;
+    height: 100%;
 
     padding: 75px 35px;
-
     overflow: hidden;
 
     background: var(--quick-background);
 
     &::before {
       content: '';
-
       position: absolute;
       z-index: -1;
 
@@ -115,18 +129,14 @@
       aspect-ratio: 1;
 
       border-radius: 50%;
-
       background: rgba(255, 255, 255, 0.23);
-
       filter: blur(16px);
     }
 
     &::after {
       content: '';
-
       position: absolute;
       z-index: -1;
-
       inset: 0;
 
       background-image: radial-gradient(
@@ -136,7 +146,6 @@
 
       background-size: 16px 16px;
       opacity: 0.35;
-
       pointer-events: none;
     }
   }
@@ -152,15 +161,12 @@
     border-radius: 50%;
 
     pointer-events: none;
-
     animation: quickOrbit 35s linear infinite;
 
     &--inner {
       width: min(66%, 300px);
-
       border-style: dashed;
       border-color: rgba(112, 74, 51, 0.18);
-
       animation-direction: reverse;
     }
   }
@@ -177,14 +183,12 @@
     gap: 8px;
 
     max-width: calc(100% - 85px);
-
     padding: 10px 14px;
 
     border: 1px solid rgba(116, 75, 51, 0.12);
     border-radius: 100px;
 
     background: rgba(255, 255, 255, 0.7);
-
     color: #805a47;
 
     font-family: $font-body;
@@ -197,6 +201,8 @@
       color: var(--quick-accent);
     }
   }
+
+  /* UNIVERSAL IMAGE FRAME */
 
   &__image {
     position: relative;
@@ -214,7 +220,6 @@
 
     margin: 0;
     padding: 0;
-
     overflow: hidden;
 
     border: 1px solid rgba(255, 255, 255, 0.35);
@@ -222,8 +227,7 @@
 
     background: rgba(255, 250, 245, 0.12);
 
-    box-shadow:
-      0 16px 38px rgba(85, 53, 36, 0.09);
+    box-shadow: 0 16px 38px rgba(85, 53, 36, 0.09);
 
     transform: none;
     animation: none;
@@ -248,7 +252,6 @@
       transform: none;
       animation: none;
       transition: none;
-
       filter: none;
     }
   }
@@ -268,11 +271,9 @@
     z-index: 4;
 
     color: var(--quick-accent);
-
     pointer-events: none;
 
-    animation:
-      quickSparkle 3.5s ease-in-out infinite;
+    animation: quickSparkle 3.5s ease-in-out infinite;
 
     &--one {
       top: 27%;
@@ -303,23 +304,77 @@
     letter-spacing: 1.3px;
   }
 
+  /* ======================================
+     RIGHT CONTENT LAYOUT
+     ====================================== */
+
   &__content {
     display: flex;
     flex-direction: column;
 
     min-width: 0;
     min-height: 0;
+    height: 100%;
 
-    padding: 65px 49px 43px;
+    overflow: hidden;
+    background: var(--modal-bg);
+  }
 
+  /* SCROLLABLE DETAILS */
+
+  &__scroll {
+    flex: 1 1 0;
+
+    min-width: 0;
+    min-height: 0;
+
+    padding: 65px 49px 25px;
+
+    overflow-x: hidden;
     overflow-y: auto;
+
     overscroll-behavior: contain;
 
-    background: #fffaf5;
-
     scrollbar-width: thin;
-    scrollbar-color: #dec6b6 transparent;
+    scrollbar-color: #c8a993 #fffaf5;
+
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #fffaf5;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #c8a993;
+      border-radius: 10px;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #d0a07b;
+      outline-offset: -3px;
+    }
   }
+
+  /* FIXED PURCHASE AREA */
+
+  &__purchase {
+    flex: 0 0 auto;
+
+    min-width: 0;
+    padding: 0 49px 23px;
+
+    background: var(--modal-bg);
+
+    border-top: 1px solid var(--modal-line);
+
+    box-shadow: 0 -9px 22px rgba(75, 41, 25, 0.035);
+  }
+
+  /* ======================================
+     PRODUCT DETAILS
+     ====================================== */
 
   &__eyebrow {
     display: inline-flex;
@@ -341,7 +396,6 @@
     flex-shrink: 0;
 
     border-radius: 50%;
-
     background: var(--quick-accent);
   }
 
@@ -388,10 +442,13 @@
     svg {
       flex-shrink: 0;
       margin-top: 3px;
-
       color: var(--quick-accent);
     }
   }
+
+  /* ======================================
+     SERVING SELECTION
+     ====================================== */
 
   &__serving-section {
     margin: 22px 0 8px;
@@ -435,7 +492,6 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-
     gap: 7px;
 
     min-width: 0;
@@ -467,7 +523,6 @@
 
     > strong {
       margin-top: 3px;
-
       color: #744c33;
       font-size: 12px;
       font-weight: 800;
@@ -496,8 +551,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 5px;
+
     width: 100%;
 
     font-size: 11px;
@@ -510,11 +565,14 @@
     }
   }
 
+  /* ======================================
+     PRICE & QUANTITY
+     ====================================== */
+
   &__price-section {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-
     gap: 18px;
 
     margin-top: 32px;
@@ -530,7 +588,6 @@
 
     small {
       color: #a38776;
-
       font-size: 9px;
       font-weight: 800;
       letter-spacing: 1.4px;
@@ -538,7 +595,6 @@
 
     strong {
       color: $cocoa;
-
       font-size: 30px;
       font-weight: 800;
       letter-spacing: -1px;
@@ -553,7 +609,6 @@
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 0.8px;
-
     white-space: nowrap;
   }
 
@@ -565,13 +620,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 15px;
+
     margin-bottom: 15px;
 
     > span {
       color: #725344;
-
       font-size: 10px;
       font-weight: 800;
       letter-spacing: 1px;
@@ -579,7 +633,6 @@
 
     small {
       color: #aa9383;
-
       font-size: 9px;
       font-weight: 700;
       letter-spacing: 0.7px;
@@ -625,7 +678,6 @@
       &:hover:not(:disabled) {
         background: var(--quick-accent);
         color: #fff;
-
         transform: scale(1.05);
       }
 
@@ -642,28 +694,27 @@
 
     output {
       color: $cocoa;
-
       font-size: 16px;
       font-weight: 800;
       font-variant-numeric: tabular-nums;
     }
   }
 
+  /* ======================================
+     PURCHASE FOOTER
+     ====================================== */
+
   &__order-summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 15px;
 
-    margin-top: 28px;
-    padding-top: 21px;
-
-    border-top: 1px solid #ebdbcf;
+    margin-top: 0;
+    padding-top: 17px;
 
     > span {
       color: #967968;
-
       font-size: 10px;
       font-weight: 800;
       letter-spacing: 1.1px;
@@ -671,7 +722,6 @@
 
     strong {
       color: $cocoa;
-
       font-size: 23px;
       font-weight: 800;
       letter-spacing: -0.5px;
@@ -683,13 +733,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
     gap: 14px;
 
     width: 100%;
     min-height: 58px;
 
-    margin-top: 22px;
+    margin-top: 14px;
     padding: 16px 24px;
 
     border: 1px solid $cocoa;
@@ -737,17 +786,20 @@
   }
 
   &__footer-note {
-    margin: 20px 0 0;
+    margin: 12px 0 0;
 
     color: #ac9180;
 
     font-family: $font-display;
     font-size: 17px;
     font-style: italic;
-
     text-align: center;
   }
 }
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
 
 @keyframes quickSparkle {
   0%,
@@ -768,12 +820,15 @@
   }
 }
 
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
 @media (max-width: 1050px) {
   .quick-view {
     width: min(100%, 900px);
 
     &__visual {
-      min-height: 550px;
       padding: 65px 25px;
     }
 
@@ -781,8 +836,12 @@
       width: min(100%, 325px);
     }
 
-    &__content {
-      padding: 65px 32px 34px;
+    &__scroll {
+      padding: 65px 32px 22px;
+    }
+
+    &__purchase {
+      padding: 0 32px 19px;
     }
 
     &__title {
@@ -795,6 +854,8 @@
   }
 }
 
+/* MOBILE — the entire modal can scroll */
+
 @media (max-width: 760px) {
   .quick-view__backdrop {
     align-items: flex-start;
@@ -802,9 +863,12 @@
   }
 
   .quick-view {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
 
     width: min(100%, 580px);
+
+    height: auto;
     max-height: none;
 
     border-radius: 23px;
@@ -816,6 +880,7 @@
     }
 
     &__visual {
+      height: auto;
       min-height: 365px;
       padding: 64px 20px 45px;
 
@@ -847,11 +912,21 @@
     }
 
     &__content {
+      height: auto;
       overflow: visible;
-
-      padding: 35px 30px 30px;
-
       border-radius: 0 0 23px 23px;
+    }
+
+    &__scroll {
+      flex: none;
+      min-height: auto;
+      overflow: visible;
+      padding: 35px 30px 0;
+    }
+
+    &__purchase {
+      padding: 0 30px 30px;
+      box-shadow: none;
     }
 
     &__title {
@@ -980,8 +1055,12 @@
       letter-spacing: 0.6px;
     }
 
-    &__content {
-      padding: 27px 21px;
+    &__scroll {
+      padding: 27px 21px 0;
+    }
+
+    &__purchase {
+      padding: 0 21px 27px;
     }
 
     &__eyebrow {
@@ -1059,12 +1138,13 @@
   }
 }
 
+/* SHORT DESKTOP SCREENS */
+
 @media (min-width: 761px) and (max-height: 760px) {
   .quick-view {
     max-height: calc(100dvh - 30px);
 
     &__visual {
-      min-height: 0;
       padding: 65px 28px;
     }
 
@@ -1072,9 +1152,13 @@
       width: min(100%, 320px);
     }
 
-    &__content {
+    &__scroll {
       padding-top: 50px;
-      padding-bottom: 28px;
+      padding-bottom: 18px;
+    }
+
+    &__purchase {
+      padding-bottom: 13px;
     }
 
     &__highlight {
@@ -1095,6 +1179,10 @@
 
     &__image {
       width: min(100%, 265px);
+    }
+
+    &__footer-note {
+      display: none;
     }
   }
 }

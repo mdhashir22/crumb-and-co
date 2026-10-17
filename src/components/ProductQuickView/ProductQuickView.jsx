@@ -67,10 +67,9 @@ function ProductQuickView({ product, onClose }) {
   const backdropRef = useRef(null);
   const modalRef = useRef(null);
   const closeButtonRef = useRef(null);
+  const scrollRef = useRef(null);
 
-  const hasServings = Boolean(
-    product?.servings?.length
-  );
+  const hasServings = Boolean(product?.servings?.length);
 
   const selectedServing = hasServings
     ? product.servings.find(
@@ -83,23 +82,27 @@ function ProductQuickView({ product, onClose }) {
 
   const totalPrice = unitPrice * quantity;
 
+  // Reset selected options when a different product opens.
   useEffect(() => {
     if (!product) return;
 
     setQuantity(1);
+
     setSelectedServingId(
       product.servings?.[0]?.id || null
     );
+
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = 0;
+    }
   }, [product?.id]);
 
+  // Lock page scrolling and handle keyboard accessibility.
   useEffect(() => {
     if (!product) return;
 
-    const previousOverflow =
-      document.body.style.overflow;
-
-    const previousFocus =
-      document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement;
 
     document.body.style.overflow = 'hidden';
 
@@ -130,10 +133,9 @@ function ProductQuickView({ product, onClose }) {
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
 
-      const focusInside =
-        modalRef.current.contains(
-          document.activeElement
-        );
+      const focusInside = modalRef.current.contains(
+        document.activeElement
+      );
 
       if (
         event.shiftKey &&
@@ -156,21 +158,12 @@ function ProductQuickView({ product, onClose }) {
       }
     }
 
-    document.addEventListener(
-      'keydown',
-      handleKeyDown
-    );
-
+    document.addEventListener('keydown', handleKeyDown);
     closeButtonRef.current?.focus();
 
     return () => {
-      document.body.style.overflow =
-        previousOverflow;
-
-      document.removeEventListener(
-        'keydown',
-        handleKeyDown
-      );
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
 
       if (
         previousFocus?.isConnected &&
@@ -181,6 +174,7 @@ function ProductQuickView({ product, onClose }) {
     };
   }, [product, onClose]);
 
+  // Preserve the original premium modal entrance animation.
   useLayoutEffect(() => {
     if (
       !product ||
@@ -190,19 +184,16 @@ function ProductQuickView({ product, onClose }) {
       return;
     }
 
-    const reducedMotion =
-      window.matchMedia(
-        '(prefers-reduced-motion: reduce)'
-      ).matches;
+    const reducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
 
     if (reducedMotion) return;
 
     const context = gsap.context(() => {
       gsap.fromTo(
         backdropRef.current,
-        {
-          autoAlpha: 0,
-        },
+        { autoAlpha: 0 },
         {
           autoAlpha: 1,
           duration: 0.35,
@@ -234,19 +225,15 @@ function ProductQuickView({ product, onClose }) {
     return null;
   }
 
-  function decreaseQuantity() {
-    setQuantity((previous) =>
-      Math.max(1, previous - 1)
-    );
-  }
+  const decreaseQuantity = () => {
+    setQuantity((previous) => Math.max(1, previous - 1));
+  };
 
-  function increaseQuantity() {
-    setQuantity((previous) =>
-      Math.min(20, previous + 1)
-    );
-  }
+  const increaseQuantity = () => {
+    setQuantity((previous) => Math.min(20, previous + 1));
+  };
 
-  function handleAddToBag() {
+  const handleAddToBag = () => {
     let cartProduct = product;
 
     if (selectedServing) {
@@ -271,7 +258,7 @@ function ProductQuickView({ product, onClose }) {
 
     addToCart(cartProduct, quantity);
     onClose();
-  }
+  };
 
   return createPortal(
     <div
@@ -291,12 +278,12 @@ function ProductQuickView({ product, onClose }) {
         aria-labelledby="quick-view-title"
         aria-describedby="quick-view-description"
         style={{
-          '--quick-accent':
-            product.accent || '#c88a52',
-          '--quick-background':
-            product.background || '#f3dec4',
+          '--quick-accent': product.accent || '#c88a52',
+          '--quick-background': product.background || '#f3dec4',
         }}
       >
+        {/* CLOSE BUTTON */}
+
         <button
           ref={closeButtonRef}
           type="button"
@@ -307,10 +294,14 @@ function ProductQuickView({ product, onClose }) {
           <X size={21} />
         </button>
 
+        {/* LEFT PRODUCT VISUAL */}
+
         <div className="quick-view__visual">
           <div className="quick-view__visual-orbit" />
 
-          <div className="quick-view__visual-orbit quick-view__visual-orbit--inner" />
+          <div
+            className="quick-view__visual-orbit quick-view__visual-orbit--inner"
+          />
 
           <span className="quick-view__visual-label">
             <Sparkles size={14} />
@@ -341,176 +332,188 @@ function ProductQuickView({ product, onClose }) {
           </span>
         </div>
 
+        {/* RIGHT PRODUCT PANEL */}
+
         <div className="quick-view__content">
-          <div className="quick-view__eyebrow">
-            <span className="quick-view__eyebrow-dot" />
 
-            {product.label ||
-              product.category ||
-              'FRESH BAKES'}
-          </div>
+          {/* SCROLLABLE PRODUCT INFORMATION */}
 
-          <h2
-            id="quick-view-title"
-            className="quick-view__title"
+          <div
+            ref={scrollRef}
+            className="quick-view__scroll"
+            tabIndex={0}
+            aria-label="Product details and options"
           >
-            {product.name}
-          </h2>
+            <div className="quick-view__eyebrow">
+              <span className="quick-view__eyebrow-dot" />
 
-          <p
-            id="quick-view-description"
-            className="quick-view__description"
-          >
-            {product.description}
-          </p>
+              {product.label ||
+                product.category ||
+                'FRESH BAKES'}
+            </div>
 
-          <div className="quick-view__highlight">
-            <Sparkles size={17} />
+            <h2
+              id="quick-view-title"
+              className="quick-view__title"
+            >
+              {product.name}
+            </h2>
 
-            <span>
-              {product.details ||
-                'A little moment of happiness in every bite.'}
-            </span>
-          </div>
+            <p
+              id="quick-view-description"
+              className="quick-view__description"
+            >
+              {product.description}
+            </p>
 
-          {hasServings && (
-            <div className="quick-view__serving-section">
-              <div className="quick-view__serving-heading">
-                <span>
-                  CHOOSE YOUR SERVING
-                </span>
+            <div className="quick-view__highlight">
+              <Sparkles size={17} />
 
+              <span>
+                {product.details ||
+                  'A little moment of happiness in every bite.'}
+              </span>
+            </div>
+
+            {/* SERVING SELECTION */}
+
+            {hasServings && (
+              <div className="quick-view__serving-section">
+                <div className="quick-view__serving-heading">
+                  <span>CHOOSE YOUR SERVING</span>
+
+                  <small>
+                    {selectedServing?.detail}
+                  </small>
+                </div>
+
+                <div
+                  className="quick-view__servings"
+                  role="group"
+                  aria-label="Select dessert serving"
+                >
+                  {product.servings.map((serving) => (
+                    <button
+                      type="button"
+                      key={serving.id}
+                      onClick={() =>
+                        setSelectedServingId(serving.id)
+                      }
+                      className={`quick-view__serving-option ${
+                        selectedServing?.id === serving.id
+                          ? 'is-active'
+                          : ''
+                      }`}
+                      aria-pressed={
+                        selectedServing?.id === serving.id
+                      }
+                    >
+                      <span className="quick-view__serving-name">
+                        {serving.label}
+
+                        {selectedServing?.id === serving.id && (
+                          <Check size={13} />
+                        )}
+                      </span>
+
+                      <small>
+                        {serving.detail}
+                      </small>
+
+                      <strong>
+                        Rs. {formatPrice(serving.price)}
+                      </strong>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* SELECTED ITEM PRICE */}
+
+            <div className="quick-view__price-section">
+              <div className="quick-view__price">
                 <small>
-                  {selectedServing?.detail}
+                  {hasServings
+                    ? 'SELECTED SERVING PRICE'
+                    : 'PRICE PER ITEM'}
                 </small>
+
+                <strong>
+                  Rs. {formatPrice(unitPrice)}
+                </strong>
               </div>
 
-              <div
-                className="quick-view__servings"
-                role="group"
-                aria-label="Select dessert serving"
-              >
-                {product.servings.map((serving) => (
-                  <button
-                    type="button"
-                    key={serving.id}
-                    onClick={() =>
-                      setSelectedServingId(serving.id)
-                    }
-                    className={`quick-view__serving-option ${
-                      selectedServing?.id === serving.id
-                        ? 'is-active'
-                        : ''
-                    }`}
-                    aria-pressed={
-                      selectedServing?.id === serving.id
-                    }
-                  >
-                    <span className="quick-view__serving-name">
-                      {serving.label}
+              <span className="quick-view__price-note">
+                MADE WITH LOVE ♡
+              </span>
+            </div>
 
-                      {selectedServing?.id === serving.id && (
-                        <Check size={13} />
-                      )}
-                    </span>
+            {/* QUANTITY CONTROLS */}
 
-                    <small>
-                      {serving.detail}
-                    </small>
+            <div className="quick-view__quantity-section">
+              <div className="quick-view__quantity-heading">
+                <span>CHOOSE YOUR QUANTITY</span>
+                <small>MAX 20 ITEMS</small>
+              </div>
 
-                    <strong>
-                      Rs. {formatPrice(serving.price)}
-                    </strong>
-                  </button>
-                ))}
+              <div className="quick-view__quantity-controls">
+                <button
+                  type="button"
+                  onClick={decreaseQuantity}
+                  disabled={quantity <= 1}
+                  aria-label="Decrease quantity"
+                >
+                  <Minus size={19} />
+                </button>
+
+                <output aria-live="polite">
+                  {String(quantity).padStart(2, '0')}
+                </output>
+
+                <button
+                  type="button"
+                  onClick={increaseQuantity}
+                  disabled={quantity >= 20}
+                  aria-label="Increase quantity"
+                >
+                  <Plus size={19} />
+                </button>
               </div>
             </div>
-          )}
+          </div>
 
-          <div className="quick-view__price-section">
-            <div className="quick-view__price">
-              <small>
-                {hasServings
-                  ? 'SELECTED SERVING PRICE'
-                  : 'PRICE PER ITEM'}
-              </small>
+          {/* ALWAYS-VISIBLE PURCHASE AREA */}
+
+          <div className="quick-view__purchase">
+            <div
+              className="quick-view__order-summary"
+              aria-live="polite"
+            >
+              <span>YOUR TOTAL</span>
 
               <strong>
-                Rs. {formatPrice(unitPrice)}
+                Rs. {formatPrice(totalPrice)}
               </strong>
             </div>
 
-            <span className="quick-view__price-note">
-              MADE WITH LOVE ♡
-            </span>
+            <button
+              type="button"
+              className="quick-view__add-button"
+              onClick={handleAddToBag}
+            >
+              <ShoppingBag size={19} />
+
+              <span>ADD TO BAG</span>
+
+              <ArrowUpRight size={19} />
+            </button>
+
+            <p className="quick-view__footer-note">
+              A little treat, a lot of happiness.
+            </p>
           </div>
 
-          <div className="quick-view__quantity-section">
-            <div className="quick-view__quantity-heading">
-              <span>
-                CHOOSE YOUR QUANTITY
-              </span>
-
-              <small>
-                MAX 20 ITEMS
-              </small>
-            </div>
-
-            <div className="quick-view__quantity-controls">
-              <button
-                type="button"
-                onClick={decreaseQuantity}
-                disabled={quantity <= 1}
-                aria-label="Decrease quantity"
-              >
-                <Minus size={19} />
-              </button>
-
-              <output aria-live="polite">
-                {String(quantity).padStart(2, '0')}
-              </output>
-
-              <button
-                type="button"
-                onClick={increaseQuantity}
-                disabled={quantity >= 20}
-                aria-label="Increase quantity"
-              >
-                <Plus size={19} />
-              </button>
-            </div>
-          </div>
-
-          <div
-            className="quick-view__order-summary"
-            aria-live="polite"
-          >
-            <span>
-              YOUR TOTAL
-            </span>
-
-            <strong>
-              Rs. {formatPrice(totalPrice)}
-            </strong>
-          </div>
-
-          <button
-            type="button"
-            className="quick-view__add-button"
-            onClick={handleAddToBag}
-          >
-            <ShoppingBag size={19} />
-
-            <span>
-              ADD TO BAG
-            </span>
-
-            <ArrowUpRight size={19} />
-          </button>
-
-          <p className="quick-view__footer-note">
-            A little treat, a lot of happiness.
-          </p>
         </div>
       </section>
     </div>,
